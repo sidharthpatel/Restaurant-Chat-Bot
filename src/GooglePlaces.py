@@ -1,4 +1,4 @@
-import requests, json 
+import requests
   
 # enter your api key here 
 api_key = 'AIzaSyDS7FCSvZSoJBUt7fsa-wtNlokIz58TIMI'
@@ -10,7 +10,7 @@ url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
 query = input('Search query: ') 
   
 # get method of requests module 
-# return response object 
+# return response object
 r = requests.get(url + 'query=' + query +
                         '&key=' + api_key) 
   
@@ -28,4 +28,4 @@ for i in range(len(y)):
       
     # Print value corresponding to the 
     # 'name' key at the ith index of y 
-    print(y[i]['name']) 
+    print (str(i + 1) + ". " + y[i]['name'])

@@ -94,7 +94,7 @@ def get_data():
     speech = "webhook response hello"
     # result = fire_base.post('Food-List', cuisines[rand_num])
     return {
-        "fulfillmentText": cuisines[rand_num],
+        "fulfillmentText": "How about " + cuisines[rand_num],
     }
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 8080))

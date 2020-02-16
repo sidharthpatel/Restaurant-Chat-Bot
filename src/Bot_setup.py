@@ -1,3 +1,5 @@
+import firebase as firebase
+
 try:
     import urllib
     import json
@@ -5,8 +7,10 @@ try:
     import requests
     from flask import (Flask,request, make_response)
     from random import randint
+    from firebase import firebase
 except Exception as e:
     print("Some modules are missing {}".format(e))
+
 # Flask app should start in global layout
 app = Flask(__name__)
 # whenever you make request /webhook
@@ -43,15 +47,27 @@ def get_data():
     query_response = req['queryResult']
     query = query_response.get('queryText')
     # print("My Query see this: " + str(query))
+    if 'I don\'t care'.lower() in query or 'i don\'t' in query or \
+            'Idk'.lower() in query or 'Don\'t know'.lower() in query:
+        query = 'food'
 
     # get method of requests module
     # return response object
-    r = requests.get(url + 'query=' + query +
-                     '&key=' + api_key)
+    # r = requests.get(url + 'query=' + query +
+                     # '&key=' + api_key)
+    r = requests.get(url + 'query=' + query + '&location=37.228382,-80.423416&radius=8000&opennow&type=restaurants'
+                                              '&key=' + api_key)
 
     # json method of response object convert
     #  json format data into python format data
     x = r.json()
+
+    fire_base = firebase.FirebaseApplication('https://chat-bot-v1-lphnfy.firebaseio.com/', None)
+    data = {
+        'Name': 'Siddharth Patel',
+        'Email': 'spsid1711@gmail.com',
+        'Phone': 1234567890
+    }
 
     # now x contains list of nested dictionaries
     # we know dictionary contain key value pair
@@ -67,8 +83,9 @@ def get_data():
         # value = randint(0, cuisines.__len__() - 1)
         # print(cuisines[value])
         cuisines.append(y[i]['name'])
-        rand_num = randint(0, len(cuisines))
+        rand_num = randint(0, len(cuisines) - 1)
     speech = "webhook response hello"
+    result = fire_base.post('Food-List', cuisines[rand_num])
     return {
         "fulfillmentText": cuisines[rand_num],
     }

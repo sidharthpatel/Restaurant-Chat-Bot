@@ -1,5 +1,3 @@
-import firebase as firebase
-
 try:
     import urllib
     import json
@@ -11,6 +9,8 @@ try:
 except Exception as e:
     print("Some modules are missing {}".format(e))
 
+
+    
 # Flask app should start in global layout
 app = Flask(__name__)
 # whenever you make request /webhook
@@ -18,8 +18,12 @@ app = Flask(__name__)
 # webhook ->
 # -----------> Process requests
 # ---------------------------->get_data()
+@app.route('/')
+def hello():
+    return "Yay!"
 
 @app.route('/webhook', methods=['POST'])
+
 def webhook():
     if request.method == "POST":
         req = request.get_json(silent=True, force=True)
@@ -56,19 +60,21 @@ def get_data():
     # return response object
     # r = requests.get(url + 'query=' + query +
                      # '&key=' + api_key)
-    r = requests.get(url + 'query=' + query + '&location=37.228382,-80.423416&radius=8000 &opennow &type=restaurants'
+    r = requests.get(url + 'query=' + query + '&location=37.228382,-80.423416&radius=8000&type=restaurants'
+                                              '&key=' + api_key)
+    print('My log says: ' + url + 'query=' + query + '&location=37.228382,-80.423416&radius=8000&type=restaurants'
                                               '&key=' + api_key)
 
     # json method of response object convert
     #  json format data into python format data
     x = r.json()
 
-    fire_base = firebase.FirebaseApplication('https://chat-bot-v1-lphnfy.firebaseio.com/', None)
-    data = {
-        'Name': 'Siddharth Patel',
-        'Email': 'spsid1711@gmail.com',
-        'Phone': 1234567890
-    }
+    # fire_base = firebase.FirebaseApplication('https://chat-bot-v1-lphnfy.firebaseio.com/', None)
+    # data = {
+    #     'Name': 'Siddharth Patel',
+    #     'Email': 'spsid1711@gmail.com',
+    #     'Phone': 1234567890
+    # }
 
     # now x contains list of nested dictionaries
     # we know dictionary contain key value pair
@@ -77,7 +83,7 @@ def get_data():
 
     # keep looping upto length of y
     cuisines = []
-    for i in range(len(y)):
+    for i in range(5):
         # Print value corresponding to the
         # 'name' key at the ith index of y
         # cuisines[i] = str(i+1)
@@ -86,12 +92,12 @@ def get_data():
         cuisines.append(y[i]['name'])
         rand_num = randint(0, len(cuisines) - 1)
     speech = "webhook response hello"
-    result = fire_base.post('Food-List', cuisines[rand_num])
+    # result = fire_base.post('Food-List', cuisines[rand_num])
     return {
         "fulfillmentText": cuisines[rand_num],
     }
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 8080))
     print ("Starting app on port %d" %(port))
     app.run(debug=True, port=port, host='0.0.0.0')
     

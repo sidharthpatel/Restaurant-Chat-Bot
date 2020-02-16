@@ -1,0 +1,7 @@
+Flask==1.0.2
+google-cloud-vision==0.35.0
+google-cloud-storage==1.13.2
+google-cloud-firestore==0.31.0
+firebase==3.0.1
+python-jwt==3.2.5
+gunicorn==19.9.0

@@ -94,5 +94,4 @@ if __name__ == '__main__':
     print ("Starting app on port %d" %(port))
     app.run(debug=True, port=port, host='0.0.0.0')
     
-    r = requests.get(url + 'query=' + query + '&location=37.228382,-80.423416&radius=8000'
-                     '&key=' + api_key)
+
